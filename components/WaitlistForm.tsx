@@ -21,6 +21,16 @@ import {
       This behavior requires you to manually check the response.ok property and throw an error if necessary. 
       That’s why you need to add the .then() method */
 
+  type ApiResponse = {
+    message: string;
+    status: string; // e.g., 'success' or 'error'
+    data?: {
+      userId: string;
+      email: string;
+    }
+  }
+      
+
 const WaitlistForm = () => {
 
     const form = useForm<WaitinglistType>({ resolver: zodResolver( WaitingListValidationSchema ) })
@@ -41,7 +51,7 @@ const WaitlistForm = () => {
             }),
         {
           loading: "Adding to waiting list",
-          success: (result: any) => result.message,
+          success: (result: ApiResponse) => result.message,
           error: (err: Error) => err.message || "Something went wrong, try again later!",
         })
     }
