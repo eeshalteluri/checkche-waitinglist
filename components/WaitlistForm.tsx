@@ -8,53 +8,24 @@ import {
 
   import { IoMdCheckboxOutline } from "react-icons/io";
   
-  import { useForm, SubmitHandler } from "react-hook-form"
+  import { useForm } from "react-hook-form"
   import { zodResolver } from "@hookform/resolvers/zod";
   import WaitingListValidationSchema from "@/lib/schemas/waitingListValidation";
   import { WaitinglistType } from "@/types/WaitingList";
 
-  import toast from "react-hot-toast";
+  import { waitingListFormHandler } from "../lib/WaitingListFormHandler";
 
   //when the "fetch" returns a promise, why should I add ".then" method to it to use it in toast.promise() method?
     /* because the fetch function itself does not directly throw an error for HTTP responses with error statuses (like 4xx or 5xx).
       Instead, it always resolves its promise with a Response object, even if the response status indicates a failure.
       This behavior requires you to manually check the response.ok property and throw an error if necessary. 
       That’s why you need to add the .then() method */
-
-  type ApiResponse = {
-    message: string;
-    status: string; // e.g., 'success' or 'error'
-    data?: {
-      userId: string;
-      email: string;
-    }
-  }
+  
 
 const WaitlistForm = () => {
 
     const form = useForm<WaitinglistType>({ resolver: zodResolver( WaitingListValidationSchema ) })
     
-    const waitingListFormHandler: SubmitHandler<WaitinglistType> = async(data) => {
-      toast.promise(
-        // Ensure fetch returns a Promise that resolves with parsed JSON data
-        fetch('/api/submit', {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 'Content-Type': 'application/json' },
-        }).then( async (response) => {
-            if (!response.ok) {
-              const errorData = await response.json()
-                throw new Error(errorData.message || 'Failed to add to waiting list');
-              }
-              return response.json() // Parse response as JSON
-            }),
-        {
-          loading: "Adding to waiting list",
-          success: (result: ApiResponse) => result.message,
-          error: (err: Error) => err.message || "Something went wrong, try again later!",
-        })
-    }
-
     return (
       <div className="max-w-[1400px] h-screen m-auto flex flex-col justify-center items-center gap-6">
         <div className="text-center flex flex-col items-center justify-center">
