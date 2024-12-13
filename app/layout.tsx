@@ -6,8 +6,8 @@ import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ['100','500'],
-  style:'normal'
-
+  style:'normal',
+  subsets: ['latin']
 })
 
 export const metadata: Metadata = {
