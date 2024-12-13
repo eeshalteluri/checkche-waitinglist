@@ -29,8 +29,6 @@ import {
       email: string;
     }
   }
-  
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
 const WaitlistForm = () => {
 
@@ -39,7 +37,7 @@ const WaitlistForm = () => {
     const waitingListFormHandler: SubmitHandler<WaitinglistType> = async(data) => {
       toast.promise(
         // Ensure fetch returns a Promise that resolves with parsed JSON data
-        fetch(`${apiUrl}/api/submit`, {
+        fetch('/api/submit', {
           method: 'POST',
           body: JSON.stringify(data),
           headers: { 'Content-Type': 'application/json' },
